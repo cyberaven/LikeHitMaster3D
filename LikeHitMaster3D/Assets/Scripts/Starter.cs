@@ -6,7 +6,7 @@ using UnityEngine;
 public class Starter : MonoBehaviour
 {
     [SerializeField] private UI ui;
-    [SerializeField] private LevelsManager levelsManager;
+    [SerializeField] private LevelsManager levelsManager;  
 
 
     private void OnEnable()
