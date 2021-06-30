@@ -8,7 +8,9 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private Transform cameraPoint;
     [SerializeField] private float moveSpeed = 1f;
-   
+    [SerializeField] private float rotationSpeed = 2f;
+
+
     private Transform movePoint;
     private bool moveEnable = false;
 
@@ -26,6 +28,13 @@ public class Player : MonoBehaviour
     private void Update()
     {
         Move();
+        LookAtNextWayPoint();
+    }
+
+    private void LookAtNextWayPoint()
+    {
+        Quaternion newRotation = Quaternion.LookRotation(movePoint.position - transform.position);
+        transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
     }
 
     private void Move()

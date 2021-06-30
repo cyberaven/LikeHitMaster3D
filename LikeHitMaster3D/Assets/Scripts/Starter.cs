@@ -12,11 +12,15 @@ public class Starter : MonoBehaviour
     private void OnEnable()
     {
         LoadLevelButton.LoadLevelButtonEve += LoadLevelButtonEve;
+        Level.PlayerTouchLastWayPointsEve += PlayerTouchLastWayPoints;
     }
     private void OnDisable()
     {
-        LoadLevelButton.LoadLevelButtonEve -= LoadLevelButtonEve;
+        LoadLevelButton.LoadLevelButtonEve -= LoadLevelButtonEve;        
+        Level.PlayerTouchLastWayPointsEve -= PlayerTouchLastWayPoints;
+
     }
+
     private void Awake()
     {
         ui = Instantiate(ui);
@@ -25,8 +29,12 @@ public class Starter : MonoBehaviour
         ui.AllPanelOff();
         ui.PanelOn(EPanelName.LoadLevelsBtnPanel);
     }
-
-
+    private void PlayerTouchLastWayPoints()
+    {
+        ui.SetCamera(Camera.main);        
+        ui.PanelOn(EPanelName.LoadLevelsBtnPanel);
+        levelsManager.DestroyCurrentLevel();
+    }
     private void LoadLevelButtonEve(int levelId)
     {
         ui.AllPanelOff();

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ public class UI : MonoBehaviour
     private void Awake()
     {
         canvas = GetComponent<Canvas>();
-        canvas.worldCamera = Camera.main;
+        SetCamera(Camera.main);
     }
 
     public void PanelOn(EPanelName ePanelName)
@@ -21,6 +22,7 @@ public class UI : MonoBehaviour
             if(ePanelName == panel.GetName())
             {
                 panel.On();
+                SetCamera(Camera.main);
             }
         }
     }
@@ -30,5 +32,10 @@ public class UI : MonoBehaviour
         {
             panel.Off();            
         }
+    }
+    public void SetCamera(Camera camera)
+    {
+        camera.transform.SetParent(null);
+        canvas.worldCamera = camera;
     }
 }

@@ -21,12 +21,15 @@ public class LevelsManager : MonoBehaviour
             }
         }
     }
-
     private void DestroyLevel(Level level)
     {
         if(level != null)
         {
             Destroy(level.gameObject);
         }
+    }
+    public void DestroyCurrentLevel()
+    {
+        DestroyLevel(currentLevel);
     }
 }

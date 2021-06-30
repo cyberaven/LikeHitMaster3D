@@ -10,8 +10,22 @@ public class Level : MonoBehaviour
 
     [SerializeField] private Player player;
     [SerializeField] private Transform levelStart;
-    [SerializeField] private List<Transform> wayPoints;
+    [SerializeField] private List<WayPoint> wayPoints;
+    private int curentWayPointId = 0;
 
+    public delegate void PlayerTouchLastWayPointsDel();
+    public static event PlayerTouchLastWayPointsDel PlayerTouchLastWayPointsEve;
+
+    private void OnEnable()
+    {
+        TestButton.BulletTouchNpcEve += BulletTouchNpc;
+        WayPoint.PlayerTouchWayPointEve += PlayerTouchWayPoint;
+    }
+    private void OnDisable()
+    {
+        TestButton.BulletTouchNpcEve -= BulletTouchNpc;
+        WayPoint.PlayerTouchWayPointEve -= PlayerTouchWayPoint;
+    }
     private void Awake()
     {
         player = Instantiate(player, transform);
@@ -21,11 +35,41 @@ public class Level : MonoBehaviour
     }
     private void Start()
     {
-        MovePlayerToNextWayPoint(wayPoints[0]);        
+        MovePlayerWayPoint(wayPoints[curentWayPointId].transform);
     }
 
-    private void MovePlayerToNextWayPoint(Transform transform)
+    private void MovePlayerWayPoint(Transform transform)
     {
         player.MoveTo(transform);
+    }
+    private void MovePlayerToNextWayPoint()
+    {
+        curentWayPointId++;
+        if(curentWayPointId == wayPoints.Count)
+        {
+            PlayerTouchLastWayPointsEve?.Invoke();
+        }
+        else
+        {
+            MovePlayerWayPoint(wayPoints[curentWayPointId].transform);
+        }        
+    }
+    private void PlayerTouchWayPoint(WayPoint wayPoint)
+    {
+        if (wayPoint.enemyCount == 0)
+        {
+            MovePlayerToNextWayPoint();
+        }
+    }
+    private void BulletTouchNpc()
+    {
+        if (wayPoints[curentWayPointId].enemyCount > 0)
+        {
+            wayPoints[curentWayPointId].enemyCount--;
+        }
+        if (wayPoints[curentWayPointId].enemyCount == 0)
+        {
+            MovePlayerToNextWayPoint();
+        }        
     }
 }
