@@ -10,7 +10,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private float rotationSpeed = 2f;
 
-
     private Transform movePoint;
     private bool moveEnable = false;
 
